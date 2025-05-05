@@ -44,8 +44,13 @@ async def on_message(message):
 
     msg = message.content.lower()
 
-    # Filter for bad words
-    if "shit" in msg:
+    # 🔒 Filters Out Bad Language
+    bad_words = [
+        "shit", "damn", "bastard", "fuck", "fucking", "asshole", "dick", "piss",
+        "crap", "bitch", "slut", "whore", "cunt", "nigger", "retard", "fag", "idiot"
+    ]
+
+    if any(bad_word in msg for bad_word in bad_words):
         await message.delete()
         await message.channel.send(f"{message.author.mention}, please refrain from using that language.")
         return
@@ -58,19 +63,22 @@ async def on_message(message):
     elif msg.startswith("say "):
         response = message.content[4:]
         await message.channel.send(response)
-    
+
     # Respond to greetings
     elif any(greeting in msg for greeting in ["hi", "hello", "hey"]):
         await message.channel.send(f"Hello {message.author.mention}! How can I assist you today?")
+    
     # Respond to goodbyes
     elif any(goodbye in msg for goodbye in ["bye", "goodbye", "see you"]):
         await message.channel.send(f"Goodbye {message.author.mention}! Have a great day! 👋")
-    # Respond to compliments            
-    elif any(compliment in msg for compliment in ["good bot", "nice bot", "smart bot"]):    
+
+    # Respond to compliments
+    elif any(compliment in msg for compliment in ["good bot", "nice bot", "smart bot"]):
         await message.channel.send(f"Thank you {message.author.mention}! You're awesome too! 😊")
-        # Respond to any command
+
+    # Respond to any command
     elif msg.startswith("!"):
-        await message.channel.send(f"Command received: {msg}")    # Respond to any comman                         )
+        await message.channel.send(f"Command received: {msg}")
 
     # Respond to any question
     elif msg.endswith("?"):
